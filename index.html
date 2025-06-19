@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dasuni's portfolio showcasing full-stack development projects in MERN, Android, and Python.">
+  <meta name="keywords" content="Dasuni, portfolio, full-stack developer, MERN, Android, Python">
+  <title>Dasuni's Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #F59E0B;
+      --primary-rgb: 245, 158, 11;
+      --secondary: #FBBF24;
+      --border-color: #9CA3AF;
+      --bg-dark: #1a1a1a;
+      --bg-light: #f5f5f5;
+      --text-dark: #D1D5DB;
+      --text-light: #1a1a1a;
+      --theme-bg: var(--bg-light);
+      --theme-text: var(--text-light);
+    }
+    [data-theme="dark"] {
+      --theme-bg: var(--bg-dark);
+      --theme-text: var(--text-dark);
+      --border-color: #4B5563;
+    }
+    [data-theme="one-dark"] {
+      --theme-bg: #282C34;
+      --theme-text: #ABB2BF;
+      --primary: #61AFEF;
+      --primary-rgb: 97, 175, 239;
+      --secondary: #98C379;
+      --border-color: #3E4451;
+    }
+    body {
+      font-family: 'Fira Code', monospace;
+      color: var(--theme-text);
+      background: var(--theme-bg);
+      transition: background 0.3s ease, color 0.3s ease;
+      position: relative;
+      overflow-x: hidden;
+      font-size: clamp(14px, 2vw, 16px);
+    }
+    .bounce {
+      animation: bounce 2s infinite;
+    }
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-0.5rem); }
+      60% { transform: translateY(-0.25rem); }
+    }
+    .scroll-button {
+      position: fixed;
+      bottom: clamp(1rem, 2vw, 1.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      width: clamp(40px, 6vw, 60px);
+      height: clamp(40px, 6vw, 60px);
+      background: linear-gradient(45deg, var(--border-color), #000000);
+      border: 4px solid var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(75, 85, 99, 0.5);
+      z-index: 10;
+    }
+    .scroll-button::after {
+      content: "";
+      width: clamp(12px, 2vw, 20px);
+      height: clamp(12px, 2vw, 20px);
+      border: 3px solid var(--primary);
+      border-width: 0 3px 3px 0;
+      transform: rotate(45deg);
+      animation: scrollHint 1.5s infinite ease-in-out;
+    }
+    .scroll-button:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    @keyframes scrollHint {
+      0% { transform: rotate(45deg) translate(0, 0); opacity: 1; }
+      50% { transform: rotate(45deg) translate(0.5rem, 0.5rem); opacity: 0.5; }
+      100% { transform: rotate(45deg) translate(0, 0); opacity: 1; }
+    }
+    .terminal {
+      background: #e5e7eb;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      padding: clamp(1rem, 2vw, 2rem);
+      position: relative;
+      overflow: hidden;
+    }
+    [data-theme="dark"] .terminal {
+      background: #2d2d2d;
+      border-color: var(--primary);
+    }
+    [data-theme="one-dark"] .terminal {
+      background: #21252B;
+      border-color: var(--primary);
+    }
+    .terminal::before {
+      content: ">_";
+      color: var(--primary);
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .skill-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: clamp(1rem, 2vw, 1.5rem);
+      text-align: center;
+      color: var(--theme-text);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    [data-theme="dark"] .skill-card {
+      background: #1a1a1a;
+      color: var(--text-dark);
+    }
+    [data-theme="one-dark"] .skill-card {
+      background: #2C323B;
+      color: var(--theme-text);
+    }
+    .skill-card:hover {
+      transform: translateY(-0.25rem);
+      box-shadow: 0 5px 15px rgba(75, 85, 99, 0.5);
+    }
+    .skill-title {
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: underline;
+      text-decoration-color: var(--primary);
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+    }
+    .skill-desc {
+      margin-top: 0.5rem;
+      font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    }
+    nav {
+      background-color: #ffffff;
+      transition: background 0.3s ease;
+      padding: clamp(0.5rem, 1vw, 1rem);
+    }
+    [data-theme="dark"] nav {
+      background-color: #000000;
+    }
+    [data-theme="one-dark"] nav {
+      background-color: #21252B;
+    }
+    section {
+      background-color: transparent;
+      padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 2vw, 2rem);
+    }
+    form {
+      background-color: #e5e7eb;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: clamp(1rem, 2vw, 1.5rem);
+    }
+    [data-theme="dark"] form {
+      background-color: #2d2d2d;
+    }
+    [data-theme="one-dark"] form {
+      background-color: #2C323B;
+    }
+    input, textarea {
+      background-color: #ffffff;
+      border-color: var(--border-color);
+      color: var(--theme-text);
+      padding: clamp(0.5rem, 1vw, 0.75rem);
+      border-radius: 4px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+    [data-theme="dark"] input, [data-theme="dark"] textarea {
+      background-color: #1a1a1a;
+      color: var(--text-dark);
+    }
+    [data-theme="one-dark"] input, [data-theme="one-dark"] textarea {
+      background-color: #21252B;
+      color: var(--theme-text);
+    }
+    input:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    button {
+      background-color: var(--primary);
+      color: #1a1a1a;
+      padding: clamp(0.5rem, 1vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+      border-radius: 4px;
+      font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+    [data-theme="one-dark"] button {
+      color: #282C34;
+    }
+    button:hover {
+      background-color: var(--secondary);
+    }
+    footer {
+      background-color: #ffffff;
+      transition: background 0.3s ease;
+      padding: clamp(1rem, 2vw, 1.5rem);
+    }
+    [data-theme="dark"] footer {
+      background-color: #000000;
+    }
+    [data-theme="one-dark"] footer {
+      background-color: #21252B;
+    }
+    a {
+      color: var(--primary);
+    }
+    a:hover {
+      color: var(--secondary);
+    }
+    a:focus {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+    h1, h2, h3 {
+      font-weight: 700;
+      color: var(--theme-text);
+    }
+    h2 {
+      font-size: clamp(1.5rem, 4vw, 3rem);
+    }
+    p, a, li, label {
+      font-weight: 400;
+      color: var(--theme-text);
+      font-size: clamp(0.9rem, 2vw, 1.125rem);
+    }
+    .typing-container {
+      display: inline-block;
+      position: relative;
+    }
+    .typing {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--primary);
+      animation: typing 3s steps(30, end) forwards, blink-cursor 0.75s step-end infinite;
+      font-size: clamp(2rem, 5vw, 3rem);
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes blink-cursor {
+      50% { border-color: transparent; }
+    }
+    .work-section {
+      position: relative;
+    }
+    .phone-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+      max-width: clamp(200px, 30vw, 320px);
+    }
+    .realistic-phone {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 18;
+      background: linear-gradient(145deg, #1c2526, #2a3435);
+      border: 4px solid #1c2526;
+      border-radius: clamp(20px, 3vw, 40px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(255, 255, 255, 0.1);
+      padding: clamp(5px, 1vw, 10px);
+      transform: rotate(-45deg) translateY(-2rem);
+      animation: pulseGlow 2.5s ease-in-out infinite;
+    }
+    @keyframes pulseGlow {
+      0% {
+        transform: rotate(-45deg) translateY(-2rem) scale(1) rotateY(0deg) rotateX(0deg);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 10px rgba(var(--primary-rgb), 0.2);
+      }
+      50% {
+        transform: rotate(-45deg) translateY(-2rem) scale(1.05) rotateY(5deg) rotateX(3deg);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(var(--primary-rgb), 0.5);
+      }
+      100% {
+        transform: rotate(-45deg) translateY(-2rem) scale(1) rotateY(0deg) rotateX(0deg);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 10px rgba(var(--primary-rgb), 0.2);
+      }
+    }
+    .realistic-phone::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -4px;
+      width: 4px;
+      height: clamp(30px, 5vw, 60px);
+      background: #1c2526;
+      border-radius: 0 2px 2px 0;
+      box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+    .realistic-phone::after {
+      content: '';
+      position: absolute;
+      top: clamp(5px, 1vw, 10px);
+      left: clamp(5px, 1vw, 10px);
+      width: calc(100% - clamp(10px, 2vw, 20px));
+      height: calc(100% - clamp(10px, 2vw, 20px));
+      background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+      border-radius: clamp(15px, 2vw, 30px);
+      display: none;
+      box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.1);
+    }
+    .phone-screen {
+      position: absolute;
+      top: clamp(5px, 1vw, 10px);
+      left: clamp(5px, 1vw, 10px);
+      width: calc(100% - clamp(10px, 2vw, 20px));
+      height: calc(100% - clamp(10px, 2vw, 20px));
+      border-radius: clamp(15px, 2vw, 30px);
+      overflow: hidden;
+    }
+    .phone-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+    .work-section .view-project {
+      position: absolute;
+      bottom: clamp(0.5rem, 1vw, 1rem);
+      right: clamp(0.5rem, 1vw, 1rem);
+      background: linear-gradient(45deg, var(--primary), var(--secondary));
+      color: #1a1a1a;
+      padding: clamp(0.25rem, 0.5vw, 0.5rem) clamp(0.5rem, 1vw, 1rem);
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    }
+    [data-theme="one-dark"] .work-section .view-project {
+      color: #282C34;
+    }
+    .work-section .view-project:hover {
+      background: linear-gradient(45deg, var(--secondary), var(--primary));
+    }
+    .work-section .arrow {
+      position: absolute;
+      top: 50%;
+      left: 60%;
+      transform: translate(-50%, -50%);
+      width: clamp(1.5rem, 3vw, 2rem);
+      height: clamp(1.5rem, 3vw, 2rem);
+    }
+    .work-section .arrow svg {
+      stroke: var(--primary);
+      fill: none;
+    }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(clamp(250px, 30vw, 320px), 1fr));
+      gap: clamp(1rem, 2vw, 2rem);
+      padding: clamp(1rem, 2vw, 2rem) 0;
+    }
+    .project-card {
+      background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    [data-theme="dark"] .project-card {
+      background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+    [data-theme="one-dark"] .project-card {
+      background: linear-gradient(135deg, #2C323B 0%, #21252B 100%);
+    }
+    .project-card:hover {
+      transform: translateY(-0.5rem);
+      box-shadow: 0 12px 30px rgba(var(--primary-rgb), 0.3);
+    }
+    .project-card img {
+      width: 100%;
+      height: clamp(150px, 20vw, 200px);
+      object-fit: cover;
+      background: #ffffff;
+      border-bottom: 2px solid var(--primary);
+      transition: transform 0.5s ease;
+    }
+    [data-theme="dark"] .project-card img {
+      background: #1a1a1a;
+    }
+    [data-theme="one-dark"] .project-card img {
+      background: #21252B;
+    }
+    .project-card:hover img {
+      transform: scale(1.05);
+    }
+    .project-card .project-content {
+      padding: clamp(1rem, 2vw, 1.5rem);
+      text-align: center;
+      background: transparent;
+    }
+    .project-card .project-title {
+      color: var(--theme-text);
+      font-weight: 700;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      margin-bottom: 0.5rem;
+    }
+    .project-card .project-desc {
+      color: #4B5563;
+      font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+      margin-bottom: 1rem;
+    }
+    [data-theme="dark"] .project-card .project-desc {
+      color: #A1A1AA;
+    }
+    [data-theme="one-dark"] .project-card .project-desc {
+      color: #5C6370;
+    }
+    .project-card .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+    .tech-badge {
+      background: rgba(var(--primary-rgb), 0.2);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+      font-weight: 500;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: clamp(0.75rem, 1.5vw, 1.5rem);
+      padding: clamp(0.75rem, 1.5vw, 1.5rem) clamp(1rem, 2vw, 2rem);
+      background: linear-gradient(135deg, #ffffff, #e5e7eb);
+      border-radius: 8px;
+      margin-bottom: clamp(1rem, 2vw, 2rem);
+    }
+    [data-theme="dark"] .filters {
+      background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    }
+    [data-theme="one-dark"] .filters {
+      background: linear-gradient(135deg, #2C323B, #21252B);
+    }
+    .filter-btn {
+      color: var(--theme-text);
+      padding: clamp(0.25rem, 0.5vw, 0.5rem) clamp(0.75rem, 1.5vw, 1.5rem);
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: clamp(0.8rem, 1.8vw, 0.9rem);
+    }
+    .filter-btn:hover {
+      background: rgba(var(--primary-rgb), 0.2);
+      color: var(--primary);
+    }
+    .filter-btn.active {
+      background: var(--primary);
+      color: #1a1a1a;
+      font-weight: 700;
+    }
+    [data-theme="one-dark"] .filter-btn.active {
+      color: #282C34;
+    }
+    .fade-in {
+      animation: fadeIn 0.5s ease-in forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(1rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .theme-toggle {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .theme-btn {
+      width: clamp(20px, 3vw, 24px);
+      height: clamp(20px, 3vw, 24px);
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border 0.3s ease;
+    }
+    .theme-btn.active {
+      border-color: var(--primary);
+    }
+    .theme-btn[data-theme="dark"] {
+      background: #1a1a1a;
+    }
+    .theme-btn[data-theme="light"] {
+      background: #f5f5f5;
+    }
+    .theme-btn[data-theme="one-dark"] {
+      background: #282C34;
+    }
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 20;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: var(--theme-bg);
+      padding: clamp(1rem, 2vw, 2rem);
+      border-radius: 12px;
+      max-width: clamp(300px, 80vw, 600px);
+      width: 90%;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    .modal-close {
+      position: absolute;
+      top: clamp(0.5rem, 1vw, 1rem);
+      right: clamp(0.5rem, 1vw, 1rem);
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      cursor: pointer;
+      color: var(--theme-text);
+    }
+    .modal img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: clamp(0.5rem, 1vw, 1rem);
+    }
+    .modal .tech-stack {
+      margin-bottom: clamp(0.5rem, 1vw, 1rem);
+    }
+    @media (max-width: 768px) {
+      nav .flex {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      nav ul {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+      }
+      .work-section .flex {
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .work-section .arrow {
+        display: none;
+      }
+      .realistic-phone {
+        transform: none;
+        margin: 0 auto;
+      }
+      .phone-wrapper {
+        max-width: 80%;
+      }
+    }
+    @media (max-width: 480px) {
+      .typing {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .filter-btn {
+        padding: 0.25rem 0.75rem;
+        font-size: clamp(0.7rem, 2vw, 0.8rem);
+      }
+      .skill-card {
+        padding: 1rem;
+      }
+      .modal-content {
+        width: 95%;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <!-- Navigation -->
+  <nav class="bg-white text-black p-4 fixed w-full top-0 z-10">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Dasuni</h1>
+      <div class="flex items-center space-x-4">
+        <ul class="flex space-x-4">
+          <li><a href="#about" class="hover:underline">About</a></li>
+          <li><a href="#work" class="hover:underline">Work</a></li>
+          <li><a href="#skills" class="hover:underline">Skills</a></li>
+          <li><a href="#projects" class="hover:underline">Projects</a></li>
+          <li><a href="#contact" class="hover:underline">Contact</a></li>
+        </ul>
+        <div class="theme-toggle">
+          <span class="theme-btn" data-theme="dark" title="Dark Theme"></span>
+          <span class="theme-btn active" data-theme="light" title="Light Theme"></span>
+          <span class="theme-btn" data-theme="one-dark" title="One Dark Theme"></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero/About Section -->
+  <section id="about" class="min-h-screen flex items-center justify-center pt-16 bg-transparent text-black relative">
+    <canvas class="particles"></canvas>
+    <div class="container mx-auto text-center px-4">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">
+        <span class="typing-container">
+          <span class="typing" id="typing-text">Hi, I'm Dasuni</span>
+        </span>
+      </h2>
+      <p class="text-lg md:text-xl mb-6 max-w-2xl mx-auto">An undergraduate at SLIIT, passionate about crafting seamless web and mobile experiences as a full-stack developer. Skilled in MERN stack, Android Studio, and more, I love turning ideas into code.</p>
+      <a href="#contact" class="bg-[--primary] text-black px-6 py-2 rounded-full hover:bg-[--secondary] transition">Get in Touch</a>
+    </div>
+    <a href="#work" class="scroll-button bounce" aria-label="Scroll Down"></a>
+  </section>
+
+  <!-- My Work Section -->
+  <section id="work" class="work-section">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+      <div class="md:w-1/2 mb-8 md:mb-0">
+        <h2 class="text-5xl font-bold mb-4">My Work</h2>
+        <p class="text-lg mb-6 max-w-md">As a passionate full-stack development enthusiast, I craft dynamic web and mobile applications using the MERN stack, Android Studio, and more. I thrive on turning innovative ideas into robust, user-focused solutions.</p>
+      </div>
+      <div class="md:w-1/2 relative phone-wrapper">
+        <div class="realistic-phone">
+          <div class="phone-screen">
+            <img src="images/manga-reader.png" alt="Manga Reader App UI" class="w-full h-full object-contain" loading="lazy">
+          </div>
+        </div>
+        <a href="#" class="view-project" aria-label="View Manga Reader App Project">View Project</a>
+        <div class="arrow">
+          <svg width="50" height="50" fill="none" stroke="purple" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-8">My Skills</h2>
+      <div class="terminal">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="skill-card">
+            <div class="skill-title">MERN Stack</div>
+            <div class="skill-desc">Proficient in building full-stack web applications using MongoDB, Express.js, React, and Node.js.</div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">HTML</div>
+            <div class="skill-desc">Skilled in creating structured, semantic, and accessible web content using HTML5.</div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">CSS</div>
+            <div class="skill-desc">Experienced in styling responsive and visually appealing interfaces with CSS, including frameworks like Tailwind.</div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">JavaScript</div>
+            <div class="skill-desc">Adept at developing dynamic and interactive web applications using modern JavaScript (ES6+).</div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">Java</div>
+            <div class="skill-desc">Experienced in building robust, object-oriented applications and APIs using Java.</div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">C++</div>
+            <div class="skill-desc">Skilled in high-performance programming and problem-solving with C++ for system-level applications.</div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">Python</div>
+            <div class="skill-desc">Proficient in Python for web development.</div>
+          </div>
+          <div class="skill-card">
+            <div class="skill-title">Kotlin</div>
+            <div class="skill-desc">Skilled in developing modern Android applications using Kotlin, leveraging its concise syntax and safety features.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- My Projects Section -->
+  <section id="projects" class="py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-8">My Projects</h2>
+      <div class="filters">
+        <span class="filter-btn active" data-filter="all">All</span>
+        <span class="filter-btn" data-filter="web">Web Development</span>
+        <span class="filter-btn" data-filter="mobile">Mobile Development</span>
+        <span class="filter-btn" data-filter="chatbot">Chatbot</span>
+        <span class="filter-btn" data-filter="react">React</span>
+      </div>
+      <div class="projects-grid">
+        <div class="project-card" data-category="web react" data-title="Recipe Generator" data-desc="A web application to create and download custom recipe cards with stickers, built with React and Tailwind CSS." data-tech="React,Tailwind CSS,JavaScript,html2canvas" data-img="https://via.placeholder.com/320x200.png?text=Recipe+Generator">
+          <img src="images/recipe-generator.png" alt="Recipe Generator" loading="lazy">
+          <div class="project-content">
+            <div class="project-title">Recipe Generator</div>
+            <div class="project-desc">A web application to create and download custom recipe cards with stickers, built with React and Tailwind CSS.</div>
+            <div class="tech-stack">
+              <span class="tech-badge">React</span>
+              <span class="tech-badge">Tailwind CSS</span>
+              <span class="tech-badge">JavaScript</span>
+              <span class="tech-badge">html2canvas</span>
+            </div>
+          </div>
+        </div>
+        <div class="project-card" data-category="web" data-title="Salon Management System" data-desc="A web-based platform for managing salon appointments, built with the MERN stack." data-tech="MongoDB,Express.js,React,Node.js" data-img="https://i.imgur.com/4vKdFFn.png">
+          <img src="images/salon-system.png" alt="Salon Management System" loading="lazy">
+          <div class="project-content">
+            <div class="project-title">Salon Management System</div>
+            <div class="project-desc">A web-based platform for managing salon appointments, built with the MERN stack.</div>
+            <div class="tech-stack">
+              <span class="tech-badge">MongoDB</span>
+              <span class="tech-badge">Express.js</span>
+              <span class="tech-badge">React</span>
+              <span class="tech-badge">Node.js</span>
+            </div>
+          </div>
+        </div>
+        <div class="project-card" data-category="chatbot" data-title="Glamist Chatbot" data-desc="An AI-powered chatbot for customer support, integrated with Node.js and Dialogflow." data-tech="Node.js,Dialogflow" data-img="https://i.imgur.com/C0uIGCu.png">
+          <img src="images/glamist-chatbot.png" alt="Glamist Chatbot" loading="lazy">
+          <div class="project-content">
+            <div class="project-title">Glamist Chatbot</div>
+            <div class="project-desc">A chatbot for customer support, integrated using key words.</div>
+            <div class="tech-stack">
+              <span class="tech-badge">react</span>
+              
+            </div>
+          </div>
+        </div>
+        <div class="project-card" data-category="mobile" data-title="Epikai" data-desc="An Android app for task management, developed using Android Studio and Java." data-tech="Android Studio,Java" data-img="https://i.imgur.com/jf3t4kV.png">
+          <img src="images/epikai.png" alt="Epikai Android App" loading="lazy">
+          <div class="project-content">
+            <div class="project-title">Epikai</div>
+            <div class="project-desc">An Android app for reading anime, developed using Android Studio and Java.</div>
+            <div class="tech-stack">
+              <span class="tech-badge">Android Studio</span>
+              <span class="tech-badge">Java</span>
+            </div>
+          </div>
+        </div>
+        <div class="project-card" data-category="react" data-title="React Pinboard" data-desc="A dynamic pinboard application built with React and Firebase for real-time data." data-tech="React,Firebase" data-img="https://i.imgur.com/TJlgp3m.png">
+          <img src="images/react-pinboard.png" alt="React Pinboard" loading="lazy">
+          <div class="project-content">
+            <div class="project-title">React Pinboard</div>
+            <div class="project-desc">A dynamic pinboard application built with React for real-time data.</div>
+            <div class="tech-stack">
+              <span class="tech-badge">React</span>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-16">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-8">Contact Me</h2>
+      <form class="max-w-lg mx-auto space-y-4" action="https://formspree.io/f/xanjbzla" method="POST" id="contact-form">
+        <div>
+          <label for="name" class="block text-sm font-medium">Name</label>
+          <input type="text" id="name" name="name" class="w-full p-2 rounded border border-[--border-color] focus:outline-none focus:ring-2 focus:ring-[--primary]" placeholder="Your Name" required>
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium">Email</label>
+          <input type="email" id="email" name="email" class="w-full p-2 rounded border border-[--border-color] focus:outline-none focus:ring-2 focus:ring-[--primary]" placeholder="Your Email" required>
+        </div>
+        <div>
+          <label for="message" class="block text-sm font-medium">Message</label>
+          <textarea id="message" name="message" rows="4" class="w-full p-2 rounded border border-[--border-color] focus:outline-none focus:ring-2 focus:ring-[--primary]" placeholder="Your Message" required></textarea>
+        </div>
+        <button type="submit" class="bg-[--primary] text-black px-4 py-2 rounded hover:bg-[--secondary]" id="submit-btn">Send Message</button>
+        <p id="form-status" class="text-center text-sm"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-white text-black py-4 text-center">
+    <p>© 2025 Dasuni. All rights reserved.</p>
+    <div class="flex justify-center space-x-4 mt-2">
+      <a href="https://github.com/DasuniSamaraweera" class="hover:text-[--secondary]" aria-label="Visit Dasuni's GitHub profile">GitHub</a>
+      <a href="https://www.linkedin.com/in/dasuni-samaraweera/" class="hover:text-[--secondary]" aria-label="Visit Dasuni's LinkedIn profile">LinkedIn</a>
+    </div>
+  </footer>
+
+  <!-- Project Modal -->
+  <div class="modal" id="project-modal">
+    <div class="modal-content">
+      <span class="modal-close">×</span>
+      <img id="modal-img" src="" alt="" loading="lazy">
+      <h3 id="modal-title" class="text-xl font-bold mb-2"></h3>
+      <p id="modal-desc" class="mb-4"></p>
+      <div id="modal-tech" class="tech-stack"></div>
+      <a id="modal-link" href="#" class="bg-[--primary] text-black px-4 py-2 rounded hover:bg-[--secondary] inline-block">View Project</a>
+    </div>
+  </div>
+
+  <script>
+    // Theme Switcher
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    themeButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const theme = button.getAttribute('data-theme');
+        document.body.setAttribute('data-theme', theme);
+        themeButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        localStorage.setItem('theme', theme);
+      });
+    });
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+    document.querySelector(`.theme-btn[data-theme="${savedTheme}"]`).classList.add('active');
+
+    // Smooth scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Hide scroll button on scroll
+    const scrollButton = document.querySelector('.scroll-button');
+    window.addEventListener('scroll', () => {
+      scrollButton.classList.toggle('hidden', window.scrollY > 100);
+    });
+
+    // Form submission handler with Formspree
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const form = this;
+      const submitButton = document.getElementById('submit-btn');
+      const formStatus = document.getElementById('form-status');
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        formStatus.textContent = 'Please fill in all fields.';
+        formStatus.style.color = 'red';
+        return;
+      }
+      if (!/\S+@\S+\.\S+/.test(email)) {
+        formStatus.textContent = 'Please enter a valid email.';
+        formStatus.style.color = 'red';
+        return;
+      }
+
+      submitButton.disabled = true;
+      formStatus.textContent = 'Sending...';
+      formStatus.style.color = 'var(--theme-text)';
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          formStatus.textContent = 'Message sent successfully!';
+          formStatus.style.color = 'green';
+          form.reset();
+        } else {
+          formStatus.textContent = 'Failed to send message. Please try again.';
+          formStatus.style.color = 'red';
+        }
+      } catch (error) {
+        formStatus.textContent = 'An error occurred. Please try again.';
+        formStatus.style.color = 'red';
+      } finally {
+        submitButton.disabled = false;
+      }
+    });
+
+    // Typing animation
+    const phrases = ["Hi, I'm Dasuni", "Full-Stack Developer", "MERN Enthusiast"];
+    const typingElement = document.getElementById('typing-text');
+    let phraseIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+
+    function type() {
+      const currentPhrase = phrases[phraseIndex];
+      typingElement.textContent = currentPhrase.substring(0, charIndex);
+      
+      if (!isDeleting && charIndex < currentPhrase.length) {
+        charIndex++;
+        setTimeout(type, 100);
+      } else if (isDeleting && charIndex > 0) {
+        charIndex--;
+        setTimeout(type, 50);
+      } else if (charIndex === currentPhrase.length) {
+        isDeleting = true;
+        setTimeout(type, 1000);
+      } else {
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        setTimeout(type, 200);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(type, 500);
+    });
+
+    // Project filter functionality
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const filter = button.getAttribute('data-filter');
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const cards = document.querySelectorAll('.project-card');
+        cards.forEach(card => {
+          card.style.opacity = '0';
+          card.style.display = 'none';
+        });
+
+        setTimeout(() => {
+          cards.forEach(card => {
+            const categories = card.getAttribute('data-category').split(' ');
+            if (filter === 'all' || categories.includes(filter)) {
+              card.style.display = 'block';
+              card.classList.add('fade-in');
+              setTimeout(() => {
+                card.style.opacity = '1';
+                card.classList.remove('fade-in');
+              }, 500);
+            }
+          });
+        }, 100);
+      });
+    });
+
+    // 3D tilt effect for project cards
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const tiltX = (y - centerY) / centerY * 10;
+        const tiltY = -(x - centerX) / centerX * 10;
+        card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-0.5rem)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+      });
+    });
+
+    // Project modal
+    const modal = document.getElementById('project-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalTech = document.getElementById('modal-tech');
+    const modalLink = document.getElementById('modal-link');
+    const modalClose = document.querySelector('.modal-close');
+
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.addEventListener('click', () => {
+        modalImg.src = card.getAttribute('data-img');
+        modalImg.alt = card.getAttribute('data-title');
+        modalTitle.textContent = card.getAttribute('data-title');
+        modalDesc.textContent = card.getAttribute('data-desc');
+        modalTech.innerHTML = card.getAttribute('data-tech').split(',').map(tech => `<span class="tech-badge">${tech}</span>`).join('');
+        modalLink.href = '#'; // Replace with actual project link
+        modal.classList.add('active');
+      });
+    });
+
+    modalClose.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('active');
+      }
+    });
+
+    // Particle background
+    const canvas = document.querySelector('.particles');
+    const ctx = canvas.getContext('2d');
+    let particlesArray = [];
+    const numberOfParticles = 50;
+
+    function initCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = document.getElementById('about').offsetHeight;
+    }
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 0.5 - 0.25;
+        this.speedY = Math.random() * 0.5 - 0.25;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = `rgba(${document.body.getAttribute('data-theme') === 'one-dark' ? '97, 175, 239' : '245, 158, 11'}, 0.8)`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function handleParticles() {
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+        particlesArray[i].draw();
+        for (let j = i; j < particlesArray.length; j++) {
+          const dx = particlesArray[i].x - particlesArray[j].x;
+          const dy = particlesArray[i].y - particlesArray[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < 100) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${document.body.getAttribute('data-theme') === 'one-dark' ? '97, 175, 239' : '245, 158, 11'}, ${1 - distance / 100})`;
+            ctx.lineWidth = 1;
+            ctx.moveTo(particlesArray[i].x, particlesArray[i].y);
+            ctx.lineTo(particlesArray[j].x, particlesArray[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      handleParticles();
+      requestAnimationFrame(animateParticles);
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+      }
+    }
+
+    initCanvas();
+    initParticles();
+    animateParticles();
+
+    window.addEventListener('resize', initCanvas);
+  </script>
+</body>
+</html>
