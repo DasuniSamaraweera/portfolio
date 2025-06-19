@@ -559,15 +559,76 @@
     .modal .tech-stack {
       margin-bottom: clamp(0.5rem, 1vw, 1rem);
     }
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background: var(--theme-bg);
+      border-right: 2px solid var(--border-color);
+      transition: left 0.3s ease;
+      z-index: 30;
+      padding: clamp(1rem, 2vw, 1.5rem);
+    }
+    .sidebar.active {
+      left: 0;
+    }
+    .sidebar ul {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .sidebar ul li a {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: var(--theme-text);
+      padding: 0.5rem;
+      display: block;
+      border-radius: 4px;
+    }
+    .sidebar ul li a:hover {
+      background: rgba(var(--primary-rgb), 0.2);
+      color: var(--primary);
+    }
+    .sidebar .theme-toggle {
+      justify-content: center;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 30px;
+      height: 25px;
+      cursor: pointer;
+    }
+    .hamburger span {
+      width: 100%;
+      height: 3px;
+      background: var(--theme-text);
+      transition: all 0.3s ease;
+    }
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
     @media (max-width: 768px) {
       nav .flex {
-        flex-direction: column;
-        gap: 1rem;
-      }
-      nav ul {
-        flex-direction: column;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
-        gap: 0.5rem;
+      }
+      nav ul, nav .theme-toggle {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
       }
       .work-section .flex {
         flex-direction: column;
@@ -602,6 +663,10 @@
         width: 95%;
         padding: 1rem;
       }
+      .sidebar {
+        width: 200px;
+        left: -200px;
+      }
     }
   </style>
 </head>
@@ -611,6 +676,11 @@
     <div class="container mx-auto flex justify-between items-center">
       <h1 class="text-2xl font-bold">Dasuni</h1>
       <div class="flex items-center space-x-4">
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
         <ul class="flex space-x-4">
           <li><a href="#about" class="hover:underline">About</a></li>
           <li><a href="#work" class="hover:underline">Work</a></li>
@@ -626,6 +696,22 @@
       </div>
     </div>
   </nav>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="theme-toggle">
+      <span class="theme-btn" data-theme="dark" title="Dark Theme"></span>
+      <span class="theme-btn active" data-theme="light" title="Light Theme"></span>
+      <span class="theme-btn" data-theme="one-dark" title="One Dark Theme"></span>
+    </div>
+  </div>
 
   <!-- Hero/About Section -->
   <section id="about" class="min-h-screen flex items-center justify-center pt-16 bg-transparent text-black relative">
@@ -753,7 +839,6 @@
             <div class="project-desc">A chatbot for customer support, integrated using key words.</div>
             <div class="tech-stack">
               <span class="tech-badge">react</span>
-              
             </div>
           </div>
         </div>
@@ -775,7 +860,6 @@
             <div class="project-desc">A dynamic pinboard application built with React for real-time data.</div>
             <div class="tech-stack">
               <span class="tech-badge">React</span>
-              
             </div>
           </div>
         </div>
@@ -850,7 +934,28 @@
         document.querySelector(this.getAttribute('href')).scrollIntoView({
           behavior: 'smooth'
         });
+        // Close sidebar on link click (mobile)
+        if (window.innerWidth <= 768) {
+          sidebar.classList.remove('active');
+          hamburger.classList.remove('active');
+        }
       });
+    });
+
+    // Sidebar Toggle
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      sidebar.classList.toggle('active');
+    });
+
+    // Close sidebar when clicking outside
+    document.addEventListener('click', (e) => {
+      if (window.innerWidth <= 768 && !sidebar.contains(e.target) && !hamburger.contains(e.target) && sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+        hamburger.classList.remove('active');
+      }
     });
 
     // Hide scroll button on scroll
@@ -1003,7 +1108,7 @@
         modalTitle.textContent = card.getAttribute('data-title');
         modalDesc.textContent = card.getAttribute('data-desc');
         modalTech.innerHTML = card.getAttribute('data-tech').split(',').map(tech => `<span class="tech-badge">${tech}</span>`).join('');
-        modalLink.href = '#'; // Replace with actual project link
+        modalLink.href = '#';
         modal.classList.add('active');
       });
     });
